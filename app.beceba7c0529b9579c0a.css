@@ -149,14 +149,14 @@
   height: 10px;
   display: block;
   content: " ";
-  background: url(https://galaxy.mobstudio.ru/web/assets/shadow_b@2x.png) 0 0 repeat-x;
+  background: url(assets/shadow_b@2x.png) 0 0 repeat-x;
   background-size: 10px 10px;
 }
 .app-bar--no-shadow:after {
   display: none;
 }
 .app-bar.app-bar--loading {
-  background-image: url(https://galaxy.mobstudio.ru/web/assets/appbar_loader@2x.png);
+  background-image: url(assets/appbar_loader@2x.png);
   background-position: 0;
   background-repeat: no-repeat;
   background-size: 700px 64px;
@@ -242,14 +242,14 @@
   animation: loading 1.6s ease-in-out infinite;
 }
 .loader--body .loader__logo {
-  background-image: url(https://galaxy.mobstudio.ru/web/assets/loader_body@2x.png);
+  background-image: url(assets/loader_body@2x.png);
 }
 .loader--channel .loader__logo {
-  background-image: url(https://galaxy.mobstudio.ru/web/assets/loader_channel@2x.png);
+  background-image: url(assets/loader_channel@2x.png);
 }
 .loader--browser .loader__logo,
 .loader--planet-mini-info .loader__logo {
-  background-image: url(https://galaxy.mobstudio.ru/web/assets/loader_browser@2x.png);
+  background-image: url(assets/loader_browser@2x.png);
 }
 .loader--planet-mini-info .loader__logo {
   background-size: 60px 60px;
@@ -645,7 +645,7 @@ body.body--loading .loader--body {
   display: block;
   content: " ";
   pointer-events: none;
-  background: url(https://galaxy.mobstudio.ru/web/assets/shadow_t@2x.png) 0 0 repeat-x;
+  background: url(assets/shadow_t@2x.png) 0 0 repeat-x;
   background-size: 10px 10px;
 }
 .channel-new-message__content {
@@ -2399,61 +2399,61 @@ body.body--loading .loader--body {
   background-position: -20px -540px;
 }
 .smile-big {
-  background-image: url(https://galaxy.mobstudio.ru/web/assets/smiles@2x.png);
+  background-image: url(assets/smiles@2x.png);
   top: 0;
   vertical-align: middle;
   margin: -4px 1px;
 }
 body[data-theme="default"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/default/bg.png) bottom repeat-x #b3cce4;
+  background: url(assets/themes/default/bg.png) bottom repeat-x #b3cce4;
 }
 body[data-theme="beach_1"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/beach_1/bg.png) bottom no-repeat #fff;
+  background: url(assets/themes/beach_1/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="polygons"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/polygons/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/polygons/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="clouds"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/clouds/bg.jpg) bottom no-repeat #fff;
+  background: url(assets/themes/clouds/bg.jpg) bottom no-repeat #fff;
 }
 body[data-theme="flowers_2"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/flowers_2/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/flowers_2/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="polygons_1"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/polygons_1/bg.png) bottom no-repeat #fff;
+  background: url(assets/themes/polygons_1/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="sand"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/sand/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/sand/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="stones"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/stones/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/stones/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="ice"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/ice/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/ice/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="wood"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/wood/bg.png) bottom no-repeat #fff;
+  background: url(/web/assets/themes/wood/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="polygons_2"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/polygons_2/bg.png) bottom no-repeat #fff;
+  background: url(assets/themes/polygons_2/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="flowers_1"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/flowers_1/bg.png) bottom no-repeat #fff;
+  background: url(assets/themes/flowers_1/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="beach_2"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/beach_2/bg.jpg) bottom no-repeat #fff;
+  background: url(assets/themes/beach_2/bg.jpg) bottom no-repeat #fff;
 }
 body[data-theme="forest"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/forest/bg.jpg) bottom no-repeat #fff;
+  background: url(assets/themes/forest/bg.jpg) bottom no-repeat #fff;
 }
 body[data-theme="anime"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/anime/bg.png) bottom no-repeat #fff;
+  background: url(assets/themes/anime/bg.png) bottom no-repeat #fff;
 }
 body[data-theme="gradient_2"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/gradient_2/bg.png) bottom repeat-x #fff;
+  background: url(assets/themes/gradient_2/bg.png) bottom repeat-x #fff;
 }
 body[data-theme="gradient_3"] {
-  background: url(https://galaxy.mobstudio.ru/web/assets/themes/gradient_3/bg.png) bottom repeat-x #fff;
+  background: url(assets/themes/gradient_3/bg.png) bottom repeat-x #fff;
 }
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 html {
