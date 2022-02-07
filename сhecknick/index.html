@@ -1,0 +1,634 @@
+<!doctype html>
+
+<html class="no-js" lang="en">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Чекер ников Galaxy </title>
+    <meta name="author" content="Dobrovoimaster" />
+    <meta name="description" content="Чекер ников Galaxy" />
+    <meta name="keywords" content="Чекер ников Galaxy" />
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/left-nav-style.css">
+ 
+</head>
+
+<body>
+ 
+    <input type="checkbox" id="nav-toggle" hidden>
+
+    <nav class="nav">
+ 
+        <label for="nav-toggle" class="nav-toggle" onclick></label>
+
+        <h2 class="logo"> 
+            Настройки
+        </h2>
+        <ul>
+       <input type="text" class="abc" id="rc" placeholder="Код восстановления" onfocus="this.placeholder = ''"
+        maxlength="10" onblur="this.placeholder = 'Код восстановления'" />
+      <br />
+      <button class="btn" id="btn-connect">Подкл.
+      </button><button class="btn" id="btn-disconnect">Откл.
+      </button><br>
+      Пользователи:
+	  <br>
+      <br>
+      <input type="radio" id="bycity" name="mode" checked>
+      <label for="age1">Диапазон (города)</label><br>
+      <input type="number" class="adjust" id="fromcity" value="1" /> 
+      <input type="number" class="adjust" id="tocity" value="7926" /><br>
+	  <br>
+      <input type="radio" id="byid" name="mode">
+      <label for="age1">Диапазон (ID)</label><br>
+      <input type="number" class="adjust" id="fromid" value="30212562" /> 
+      <input type="number" class="adjust" id="toid" value="43931453" /><br>
+	  <br>
+      Искать тех, кто не заходит:<br>
+      <input type="number" class="adjust" id="days" value="40" /> и более дн.<br>
+	  <br>
+      <input type="checkbox" id="notnull" name="notnull" checked>
+      <label for="notnull">отсеивать обнул</label><br>
+      <!-- <button class="btn" id="btn-connect">загрузить польз.
+      </button>
+      <button class="btn" id="btn-connect">стоп
+      </button><br>
+      <button class="btn" id="btn-connect">запустить чекер
+      </button>
+      <button class="btn" id="btn-connect">стоп
+      </button><br> -->
+	  <br>
+      Символы фильтра:
+      <input type="text" class="adjust" id="filterchar" value="-[]/^{}_=`1234567890" style="width: 150px;" /><br>
+      <br>
+    </div>
+        </ul>
+    </nav>
+
+    <main role="main">
+        <article>
+            <header>
+                <h1 class="header__title">Чекер ников Galaxy</h1>
+                
+            </header>
+            <section>
+               <p style="text-align: center;">
+
+
+<div id="wlbl" class="wlblcontent"><br>
+<center>
+<br> Ваше время: <span id="clockbox"></span>
+<br>
+      Лог:
+      
+	  </center>
+      <br><textarea id="infolog" name="infolog" rows="8" cols="50"></textarea><br>
+	  <center> Найденные ники:  </center>
+	  <br>
+      <textarea id="nicklog" name="nicklog" rows="10" cols="50"></textarea><br><br>
+    </div>
+    <div id="Contact" class="tabcontent">
+    </div>
+
+    <div id="About" class="tabcontent">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
+      integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script>
+      function openPage(pageName, elmnt, color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+        elmnt.style.backgroundColor = color;
+      }
+
+
+      Date.prototype.toDateInputValue = (function () {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+      });
+
+      // Get the element with id="defaultOpen" and click on it
+      document.getElementById("defaultOpen").click();
+    </script>
+
+    <script defer>
+      var id;
+      var useridg;
+      var passwordg;
+      var text;
+      const x = -100;
+      const y = 100;
+      const u = -40;
+      const v = 40;
+      var rc;
+      var m1;
+      var m2;
+      var filter;
+      var filterarr;
+      var useless;
+      var nextPageNo;
+      var ws;
+      var haaapsi;
+      var btn = document.getElementById("btn-connect");
+      m1 = document.getElementById("bycity");
+      m2 = document.getElementById("byid");
+      btn.addEventListener("click", () => {
+        rc = document.getElementById("rc").value;
+        ws = new WebSocket("wss://cs.mobstudio.ru:6672");
+
+        var txt = document.getElementById("infolog");
+        txt.scrollTop = txt.scrollHeight;
+        txt.value += "Запуск..."
+        const parseHaaapsi = (e) => {
+          var temp = CryptoJS.MD5(e).toString(CryptoJS.enc.Hex);
+          return (temp = (temp = temp.split("").reverse().join("0")).substr(
+            5,
+            10
+          ));
+        };
+        const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
+        // Examples
+
+
+
+        ws.onopen = () => {
+          ws.send(":en IDENT 312 -2 4030 1 2 :GALA\r\n");
+        };
+        ws.onmessage = (event) => {
+          var text = event.data;
+          var snippets = text.split(" ");
+
+          if (snippets[0] === "HAAAPSI") {
+            haaapsi = snippets[1];
+            ws.send("RECOVER " + rc + "\r\n");
+          }
+          if (snippets[0] === "REGISTER") {
+            var temp = parseHaaapsi(haaapsi);
+            id = snippets[1];
+            var password = snippets[2];
+            var username = snippets[3];
+            useridg = id;
+            passwordg = password;
+            var finalusername = username.split("\r\n");
+            ws.send(
+              "USER " +
+              id +
+              " " +
+              password +
+              " " +
+              finalusername +
+              " " +
+              temp +
+              "\r\n"
+            );
+          }
+          if (snippets[0] === "999") {
+            ws.send("FWLISTVER 281\r\n");
+            ws.send("ADDONS 244790 2\r\n");
+            ws.send("MYADDONS 244790 2\r\n");
+            ws.send("PHONE 1366 768 0 2 :chrome 87.0.4280.141\r\n");
+            ws.send("JOIN\r\n");
+          }
+
+
+          if (snippets[0] === "PING\r\n") {
+            ws.send("PONG\r\n");
+          }
+
+          if (snippets[0] === "CURRENT_VERSION") {
+            flag = true;
+            if (m1.checked) {
+              async function searchCity() {
+                if (flag) {
+                  fromcity = document.getElementById("fromcity").value;
+                  tocity = document.getElementById("tocity").value;
+                  url = `https://galaxy.mobstudio.ru/services/?userID=${useridg}&password=${passwordg}&a=people_near&gender=0&cityId=${fromcity}&page=0&usercur=${useridg}&random=0.7630586129993804`
+                  if (fromcity != tocity) {
+                    document.getElementById("fromcity").value = parseInt(fromcity) + 1;
+                  }
+                  const res = await axios.get(url,
+                    {
+                      headers: {
+                        "x-galaxy-client-ver": "9.4",
+                        "x-galaxy-kbv": "296",
+                        "x-galaxy-lng": "en",
+                        "x-galaxy-model": "chrome 88.0.4324.96",
+                        "x-galaxy-orientation": "portrait",
+                        "x-galaxy-os-ver": "1",
+                        "x-galaxy-platform": "web",
+                        "x-galaxy-scr-dpi": "2",
+                        "x-galaxy-scr-h": "715",
+                        "x-galaxy-scr-w": "700",
+                        "x-galaxy-user-agent":
+                          "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+                      },
+                    }
+                  ).then((response) => {
+                    var txt = document.getElementById("infolog");
+                    var txt2 = document.getElementById("nicklog");
+                    txt.scrollTop = txt.scrollHeight;
+                    txt2.scrollTop = txt2.scrollHeight;
+                    txt.value += '\n' + 'сканирование в городе ' + fromcity;
+                    txt.value += '\n' + 'сканировать страницу 0...';
+                    useless = false;
+                    var resultCheck = response.data.toLowerCase();
+                    filter = document.getElementById("filterchar").value;
+                    filterarr = filter.split("");
+                    var resultCheck = response.data.toLowerCase();
+                    if (resultCheck.includes("s__gd__icon size-1") || resultCheck.includes("yesterday") || resultCheck.includes("today") || resultCheck.includes("ago") || resultCheck.includes("couldn't find any guy from your") || resultCheck.includes("<body><div style='max-width: 520px; margin: 0 auto;'></div></body>")) {
+                      if (resultCheck.includes("next")) {
+                        var resultArr = resultCheck.split("=").join("&");
+                        var resultArr2 = resultArr.split("&");
+                        var pageIndex = resultArr2.indexOf("page");
+                        nextPageNo = resultArr2[pageIndex + 1];
+                        setTimeout(() => {
+                          nextPage();
+                        }, 2000);
+                      }
+                      else {
+                        searchCity();
+                      }
+                    }
+                    else {
+                      var resultArr = resultCheck.split("<").join(">");
+                      var resultArr2 = resultArr.split(" at ").join(">");
+                      var resultArr3 = resultArr2.split("active ").join(">");
+                      var resultArr4 = resultArr3.split(">");
+                      var resultArr5 = resultArr4.reverse();
+                      var luactindex = resultArr5.indexOf('div class=\"s__gd__plank__text position3\"');
+                      var lastUserActive = resultArr5[luactindex - 2];
+                      if (!lastUserActive.includes(",")) {
+                        var current = new Date();
+                        lastUserActive = lastUserActive + " " + current.getFullYear();
+                      }
+                      var days = document.getElementById("days").value;
+                      var d = new Date(lastUserActive);
+                      var todayDate = new Date();
+
+                      const diffTime = Math.abs(todayDate - d);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                      if (diffDays < days) {
+                        if (resultCheck.includes("next")) {
+                          var resultArr = resultCheck.split("=").join("&");
+                          var resultArr2 = resultArr.split("&");
+                          var pageIndex = resultArr2.indexOf("page");
+                          nextPageNo = resultArr2[pageIndex + 1];
+                          setTimeout(() => {
+                            nextPage();
+                          }, 2000);
+                        }
+                        else {
+                          searchCity();
+                        }
+                      }
+                      else {
+                        resultArr5.reverse();
+                        var nickstr = 'div class=\"s__gd__plank__text position1\"'
+                        var occurances = countOccurrences(resultArr5, nickstr);
+                        var nickArray = [];
+                        for (var k = 0; k < occurances; k++) {
+                          useless = false;
+                          var strindex = resultArr5.indexOf(nickstr);
+                          var nick = resultArr5[strindex + 1];
+                          var actv = resultArr5[strindex + 10];
+                          if (!actv.includes(",")) {
+                            var current = new Date();
+                            actv = actv + " " + current.getFullYear();
+                          }
+                          filterarr.forEach((element) => {
+                            if (nick.includes(element)) {
+                              useless = true;
+                            }
+                          });
+                          var days = document.getElementById("days").value;
+                          var d = new Date(actv);
+                          var todayDate = new Date();
+
+                          const diffTime = Math.abs(todayDate - d);
+                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                          if (diffDays < days) {
+                            useless = true;
+                          } 
+                          if (!useless) {
+                            nickArray.push(nick);
+                          }
+                          resultArr5[strindex] = "-";
+                        }
+
+                        nickArray.forEach(element => {
+                          txt2.value += element + '\n';
+                        });
+                        if (resultCheck.includes("next")) {
+                          var resultArr = resultCheck.split("=").join("&");
+                          var resultArr2 = resultArr.split("&");
+                          var pageIndex = resultArr2.indexOf("page");
+                          nextPageNo = resultArr2[pageIndex + 1];
+                          setTimeout(() => {
+                            nextPage();
+                          }, 2000);
+                        }
+                        else {
+                          searchCity();
+                        }
+                      }
+                    }
+                  }, (error) => {
+                    console.log(error);
+                  });
+                }
+              };
+              async function nextPage() {
+                if (flag) {
+                  url = `https://galaxy.mobstudio.ru/services/?userID=${useridg}&password=${passwordg}&a=people_near&gender=0&cityId=${fromcity}&page=${nextPageNo}&usercur=${useridg}&random=0.7630586129993804`
+                  const res = await axios.get(url,
+                    {
+                      headers: {
+                        "x-galaxy-client-ver": "9.4",
+                        "x-galaxy-kbv": "296",
+                        "x-galaxy-lng": "en",
+                        "x-galaxy-model": "chrome 88.0.4324.96",
+                        "x-galaxy-orientation": "portrait",
+                        "x-galaxy-os-ver": "1",
+                        "x-galaxy-platform": "web",
+                        "x-galaxy-scr-dpi": "2",
+                        "x-galaxy-scr-h": "715",
+                        "x-galaxy-scr-w": "700",
+                        "x-galaxy-user-agent":
+                          "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+                      },
+                    }
+                  ).then((response) => {
+                    var txt = document.getElementById("infolog");
+                    var txt2 = document.getElementById("nicklog");
+                    txt.scrollTop = txt.scrollHeight;
+                    txt2.scrollTop = txt2.scrollHeight;
+                    txt.value += '\n' + `сканировать страницу ${nextPageNo}...`;
+                    useless = false;
+                    var resultCheck = response.data.toLowerCase();
+                    filter = document.getElementById("filterchar").value;
+                    filterarr = filter.split("");
+                    if (resultCheck.includes("s__gd__icon size-1") || resultCheck.includes("yesterday") || resultCheck.includes("today") || resultCheck.includes("ago") || resultCheck.includes("couldn't find any guy from your") || resultCheck.includes("<body><div style='max-width: 520px; margin: 0 auto;'></div></body>")) {
+                      if (resultCheck.includes("next")) {
+                        var resultArr = resultCheck.split("=").join("&");
+                        var resultArr2 = resultArr.split("&");
+                        var pageIndex = resultArr2.indexOf("page");
+                        nextPageNo = resultArr2[pageIndex + 1];
+                        setTimeout(() => {
+                          nextPage();
+                        }, 2000);
+                      }
+                      else {
+                        searchCity();
+                      }
+                    }
+                    else {
+                      var resultArr = resultCheck.split("<").join(">");
+                      var resultArr2 = resultArr.split(" at ").join(">");
+                      var resultArr3 = resultArr2.split("active ").join(">");
+                      var resultArr4 = resultArr3.split(">");
+                      var resultArr5 = resultArr4.reverse();
+                      var luactindex = resultArr5.indexOf('div class=\"s__gd__plank__text position3\"');
+                      var lastUserActive = resultArr5[luactindex - 2];
+                      if (!lastUserActive.includes(",")) {
+                        var current = new Date();
+                        lastUserActive = lastUserActive + " " + current.getFullYear();
+                      }
+                      var days = document.getElementById("days").value;
+                      var d = new Date(lastUserActive);
+                      var todayDate = new Date();
+
+                      const diffTime = Math.abs(todayDate - d);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                      if (diffDays < days) {
+                        if (resultCheck.includes("next")) {
+                          var resultArr = resultCheck.split("=").join("&");
+                          var resultArr2 = resultArr.split("&");
+                          var pageIndex = resultArr2.indexOf("page");
+                          nextPageNo = resultArr2[pageIndex + 1];
+                          setTimeout(() => {
+                            nextPage();
+                          }, 2000);
+                        }
+                        else {
+                          searchCity();
+                        }
+                      }
+                      else {
+                        resultArr5.reverse();
+                        var nickstr = 'div class=\"s__gd__plank__text position1\"'
+                        var occurances = countOccurrences(resultArr5, nickstr);
+                        var nickArray = [];
+                        for (var k = 0; k < occurances; k++) {
+                          useless = false;
+                          var strindex = resultArr5.indexOf(nickstr);
+                          var nick = resultArr5[strindex + 1];
+                          var actv = resultArr5[strindex + 10];
+                          if (!actv.includes(",")) {
+                            var current = new Date();
+                            actv = actv + " " + current.getFullYear();
+                          }
+                          filterarr.forEach((element) => {
+                            if (nick.includes(element)) {
+                              useless = true;
+                            }
+                          });
+                          var days = document.getElementById("days").value;
+                          var d = new Date(actv);
+                          var todayDate = new Date();
+
+                          const diffTime = Math.abs(todayDate - d);
+                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                          if (diffDays < days) {
+                            useless = true;
+                          } 
+                          if (!useless) {
+                            nickArray.push(nick);
+                          }
+                          resultArr5[strindex] = "-";
+                        }
+
+                        nickArray.forEach(element => {
+                          txt2.value += element + '\n';
+                        });
+                        if (resultCheck.includes("next")) {
+                          var resultArr = resultCheck.split("=").join("&");
+                          var resultArr2 = resultArr.split("&");
+                          var pageIndex = resultArr2.indexOf("page");
+                          nextPageNo = resultArr2[pageIndex + 1];
+                          setTimeout(() => {
+                            nextPage();
+                          }, 2000);
+                        }
+                        else {
+                          searchCity();
+                        }
+                      }
+                    }
+                  }, (error) => {
+                    console.log(error);
+                  });
+                }
+              };
+              searchCity();
+            }
+            if (m2.checked) {
+              flag = true;
+              async function searchId() {
+                if (flag) {
+                  fromid = document.getElementById("fromid").value;
+                  toid = document.getElementById("toid").value;
+                  url = `https://galaxy.mobstudio.ru/services/?userID=${useridg}&password=${passwordg}&a=whois&usercur=${fromid}&random=0.3639954126932925`
+                  if (fromid != toid) {
+                    document.getElementById("fromid").value = parseInt(fromid) + 1;
+                  }
+                  else {
+                    clearInterval(beginId);
+                  }
+                  const res = await axios.get(url,
+                    {
+                      headers: {
+                        "x-galaxy-client-ver": "9.4",
+                        "x-galaxy-kbv": "296",
+                        "x-galaxy-lng": "en",
+                        "x-galaxy-model": "chrome 88.0.4324.96",
+                        "x-galaxy-orientation": "portrait",
+                        "x-galaxy-os-ver": "1",
+                        "x-galaxy-platform": "web",
+                        "x-galaxy-scr-dpi": "2",
+                        "x-galaxy-scr-h": "715",
+                        "x-galaxy-scr-w": "700",
+                        "x-galaxy-user-agent":
+                          "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36",
+                      },
+                    }
+                  ).then((response) => {
+                    useless = false;
+                    var txt = document.getElementById("infolog");
+                    var txt2 = document.getElementById("nicklog");
+                    filter = document.getElementById("filterchar").value;
+                    filterarr = filter.split("");
+                    var notnull = document.getElementById("notnull");
+                    txt.scrollTop = txt.scrollHeight;
+                    txt2.scrollTop = txt2.scrollHeight;
+                    var resultCheck = response.data.toLowerCase();
+                    var resultArr = resultCheck.split(">");
+                    var snick = '<div class=\"s__nick\"'
+                    var string = '<p style=\"padding-left: 5px;\"'
+                    if (notnull.checked) {
+                      if (resultCheck.includes("previous username: <b")) {
+                        useless = true;
+                      }
+                    }
+                    if (resultCheck.includes(string)) {
+                      var days = document.getElementById("days").value;
+                      stringIndex = resultArr.indexOf(string);
+                      var snickIndex = resultArr.indexOf(snick);
+                      var nickRaw = resultArr[snickIndex + 1];
+                      var nick = nickRaw.substring(0, nickRaw.length - 40);
+                      var lastActiveRaw = resultArr[stringIndex + 1];
+                      var lastActive = lastActiveRaw.substring(0, lastActiveRaw.length - 3);
+                      var ActiveMonthDate = lastActive.substring(10, lastActive.length);
+                      if (!ActiveMonthDate.includes(",")) {
+                        var current = new Date();
+                        ActiveMonthDate = ActiveMonthDate + " " + current.getFullYear();
+                      }
+                      var d = new Date(ActiveMonthDate);
+                      var todayDate = new Date();
+
+                      const diffTime = Math.abs(todayDate - d);
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                      if (diffDays < days) {
+                        useless = true;
+                      }
+                      if (lastActive.includes("ago") || lastActive.includes("yesterday,")) {
+                        useless = true;
+                      }
+                      txt.value += '\n' + fromid + ": " + nick + ": " + lastActive;
+                      filterarr.forEach((element) => {
+                        if (nick.includes(element)) {
+                          useless = true;
+                        }
+                      });
+                      if (!useless) {
+                        txt2.value += nick + '\n';
+                      }
+                    } else if (resultCheck.includes("does not")) {
+                      txt.value += '\n' + fromid + ": " + "Польз. не существует";
+                    }
+                    else {
+                      var snickIndex = resultArr.indexOf(snick);
+                      var nickRaw = resultArr[snickIndex + 1];
+                      var nick = nick.substring(0, nick.length - 40);
+                      txt.value += '\n' + fromid + ": " + nick + ": " + "Польз. в сети";
+                    }
+                  }, (error) => {
+                    console.log(error);
+                  });
+                }
+              };
+              beginId = setInterval(() => {
+                searchId();
+              }, 2000);
+            }
+          }
+
+        };
+      });
+
+      document
+        .getElementById("btn-disconnect")
+        .addEventListener("click", () => {
+          ws.send("QUIT :ds\r\n");
+          flag = false;
+        });
+
+
+
+      function GetClock() {
+        var d = new Date();
+        var nhour = d.getHours(),
+          nmin = d.getMinutes(),
+          nsec = d.getSeconds();
+        if (nmin <= 9) nmin = "0" + nmin;
+        if (nsec <= 9) nsec = "0" + nsec;
+
+        var clocktext = "" + nhour + ":" + nmin + ":" + nsec + "";
+        document.getElementById("clockbox").innerHTML = clocktext;
+      }
+
+      GetClock();
+      setInterval(GetClock, 1000);
+    </script>
+</body>
+
+            </section>
+            <hr>
+            <footer>
+                
+                <p>сделано с любовью - <a href="https://t.me/GalaxyChatSoft">@Galaxy Chat Soft</a>
+            </footer>
+        </article>
+    </main>
+</body>
+
+</html>
